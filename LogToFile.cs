@@ -4,33 +4,81 @@ using System.Text;
 
 namespace Logging
 {
-    public static class LogToFile
+    public class LogToFile
     {
-        public static void Log(string path, string type, string message)
+        private readonly string ErrorPath;
+        private readonly string InfoPath;
+        private readonly string WarningPath;
+        private readonly string FatalPath;
+
+        public LogToFile()
+        {
+            using (var file = new StreamReader("LogConfig.cfg"))
+            {
+                string tempLine;
+                while((tempLine = file.ReadLine()) != null)
+                {
+                    tempLine = tempLine.Trim();
+                    var index = tempLine.IndexOf('=');
+                    if(index < 0)
+                    {
+                        continue;
+                    }
+                    var tempSymbols = tempLine.Substring(index + 1);
+                    var tempVar = tempLine.Substring(0, index);
+                    tempSymbols = tempSymbols.Trim();
+                    tempVar = tempVar.Trim();
+
+                    switch (tempVar)
+                    {
+                        case "ErrorPath":
+                            ErrorPath = tempSymbols;
+                            break;
+                        case "InfoPath":
+                            InfoPath = tempSymbols;
+                            break;
+                        case "WarningPath":
+                            WarningPath = tempSymbols;
+                            break;
+                        case "FatalPath":
+                            FatalPath = tempSymbols;
+                            break;
+                    }
+                }
+            }
+        }
+
+        public LogToFile(string errorPath, string infoPath, string warningPath, string fatalPath)
+        {
+            ErrorPath = errorPath;
+            InfoPath = infoPath;
+            WarningPath = warningPath;
+            FatalPath = fatalPath;
+        }
+       
+
+        public void Log(string path, string type, string message)
         {
             var msg = $"{DateTime.Now} [{type}] : {message}";
             using var file = new StreamWriter(path, true, Encoding.UTF8);
             file.WriteLine(msg);
         }
 
-        public static void RegInfo(string login)
+        public void Info(string message)
         {
-            Log(@"Logging\Reg\Log.log", "Info", $"{login} отправил заявку на регистрацию.");
+            Log(InfoPath,"INFO", $"{message}");
         }
-
-        public static void RegError(string login)
+        public void Error(string message)
         {
-            Log(@"Logging\Reg\Log.log", "Error!", $"{login} попытка регистрации не удалась!");
+            Log(ErrorPath,"ERROR", $"{message}");
         }
-
-        public static void AutorizationInfo(string login)
+        public void Warning(string message)
         {
-            Log(@"Logging\Autorization\Log.log", "Info", $"Пользователь {login} авторизовался.");
+            Log(WarningPath, "WARNING", $"{message}");
         }
-
-        public static void AutorizationError(string login)
+        public void Fatal(string message)
         {
-            Log(@"Logging\Autorization\Log.log", "Error!", $"Попытка авторизации пользователя {login} не удалась");
+            Log(FatalPath, "FATAL", $"{message}");
         }
     }
 }
