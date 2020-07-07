@@ -43,6 +43,9 @@ namespace Logging
                         case "FatalPath":
                             FatalPath = tempSymbols;
                             break;
+                        case "Succes":
+                            FatalPath = tempSymbols;
+                            break;
                     }
                 }
             }
@@ -79,6 +82,10 @@ namespace Logging
         public void Fatal(string message)
         {
             Log(FatalPath, "FATAL", $"{message}");
+        }
+        public void Succes(string message)
+        {
+            Log(InfoPath, "INFO", $"{message}");
         }
     }
 }
