@@ -71,7 +71,7 @@ namespace Logging
 
         public void Info(string message)
         {
-            Log(InfoPath,"INFO", $"{message}");
+            Log(InfoPath,"INFO ", $"{message}");
         }
         public void Error(string message)
         {
