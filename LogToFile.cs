@@ -10,6 +10,7 @@ namespace Logging
         private readonly string InfoPath;
         private readonly string WarningPath;
         private readonly string FatalPath;
+        private readonly string SuccessPath;
 
         public LogToFile()
         {
@@ -43,20 +44,21 @@ namespace Logging
                         case "FatalPath":
                             FatalPath = tempSymbols;
                             break;
-                        case "Succes":
-                            FatalPath = tempSymbols;
+                        case "SuccessPath":
+                            SuccessPath = tempSymbols;
                             break;
                     }
                 }
             }
         }
 
-        public LogToFile(string errorPath, string infoPath, string warningPath, string fatalPath)
+        public LogToFile(string errorPath, string infoPath, string warningPath, string fatalPath, string successPath)
         {
             ErrorPath = errorPath;
             InfoPath = infoPath;
             WarningPath = warningPath;
             FatalPath = fatalPath;
+            SuccessPath = successPath;
         }
        
 
@@ -83,9 +85,9 @@ namespace Logging
         {
             Log(FatalPath, "FATAL", $"{message}");
         }
-        public void Succes(string message)
+        public void Success(string message)
         {
-            Log(InfoPath, "INFO", $"{message}");
+            Log(InfoPath, "SUCCESS", $"{message}");
         }
     }
 }
