@@ -36,7 +36,7 @@ ___
 Помимо готовых можно использовать функцию *Log*, куда передаётся три аргумента типа string.
 ___
 Пример:
-```
+```csharp
 private LogToFile log = new LogToFile(); 
 private string path = @"Logging\Other.log"; 
 private string type = "OTHER";
