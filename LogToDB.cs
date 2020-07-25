@@ -5,8 +5,10 @@ using DBconnect;
 
 namespace Logging
 {
+    public delegate void Message(string message);
     public class LogToDB
     {
+        public event Message mess;
         private string Logging(string type, string message, string username = "")
         {
             var sql = $"INSERT INTO log VALUES ('{DateTime.Now}', '{type}', '{username}', '{message}')";
@@ -21,8 +23,7 @@ namespace Logging
             }
             else
             {
-                var logToFile = new LogToFile();
-                logToFile.Error("Не удалось подключиться к БД");
+                mess?.Invoke("Не удалось подключиться к БД");
             }
         }
         public void Info(string message, string username)
@@ -47,8 +48,7 @@ namespace Logging
             }
             else
             {
-                var logToFile = new LogToFile();
-                logToFile.Error("Не удалось подключиться к БД");
+                mess?.Invoke("Не удалось подключиться к БД");
             }
         }
         public void Warning(string message, string username)
@@ -60,8 +60,7 @@ namespace Logging
             }
             else
             {
-                var logToFile = new LogToFile();
-                logToFile.Error("Не удалось подключиться к БД");
+                mess?.Invoke("Не удалось подключиться к БД");
             }
         }
         public void Fatal(string message, string username)
@@ -73,8 +72,7 @@ namespace Logging
             }
             else
             {
-                var logToFile = new LogToFile();
-                logToFile.Fatal(Logging("FATAL", username, message));
+                mess?.Invoke("Не удалось подключиться к БД");
             }
         }
         public void Success(string message, string username)
@@ -86,8 +84,7 @@ namespace Logging
             }
             else
             {
-                var logToFile = new LogToFile();
-                logToFile.Error("Не удалось подключиться к БД");
+                mess?.Invoke("Не удалось подключиться к БД");
             }
         }
     }
