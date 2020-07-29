@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Logging": {
-      "commandName": "Executable",
-      "executablePath": "C:\\Users\\Дмитрий\\Documents\\GitHub\\Logging\\LogToFile.cs"
-    }
-  }
-}
