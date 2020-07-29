@@ -1,9 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Logging
 {
+    class Program
+    {
+        LogToFile LogToFile = new LogToFile();
+
+    }
+
     public class LogToFile
     {
         private readonly string ErrorPath;
@@ -17,11 +24,11 @@ namespace Logging
             using (var file = new StreamReader("LogConfig.cfg"))
             {
                 string tempLine;
-                while((tempLine = file.ReadLine()) != null)
+                while ((tempLine = file.ReadLine()) != null)
                 {
                     tempLine = tempLine.Trim();
                     var index = tempLine.IndexOf('=');
-                    if(index < 0)
+                    if (index < 0)
                     {
                         continue;
                     }
@@ -60,7 +67,16 @@ namespace Logging
             FatalPath = fatalPath;
             SuccessPath = successPath;
         }
-       
+
+        public async Task<string> AsyncLog(string path, string type, string message)
+        {
+            return await Task.Run(() =>
+            {
+                Log(path, type, message);
+                return "Success";
+            });
+
+        }
 
         public void Log(string path, string type, string message)
         {
@@ -71,11 +87,11 @@ namespace Logging
 
         public void Info(string message)
         {
-            Log(InfoPath,"INFO ", $"{message}");
+            Log(InfoPath, "INFO ", $"{message}");
         }
         public void Error(string message)
         {
-            Log(ErrorPath,"ERROR", $"{message}");
+            Log(ErrorPath, "ERROR", $"{message}");
         }
         public void Warning(string message)
         {
