@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DBconnect;
+using System.Threading.Tasks;
 
 namespace Logging
 {
@@ -14,6 +15,61 @@ namespace Logging
             var sql = $"INSERT INTO log VALUES ('{DateTime.Now}', '{type}', '{username}', '{message}')";
             return sql;
         }
+
+        public async Task<string> AsyncLog(string type, string username, string message)
+        {
+            return await Task.Run(() =>
+            {
+                Log(type, username, message);
+                return "Success";
+            });
+        }
+
+        public async Task<string> AsyncInfo(string message, string username)
+        {
+            return await Task.Run(() =>
+            {
+                Info(message, username);
+                return "Success";
+            });
+        }
+
+        public async Task<string> AsyncError(string message, string username)
+        {
+            return await Task.Run(() =>
+            {
+                Error(message, username);
+                return "Success";
+            });
+        }
+
+        public async Task<string> AsyncWarning(string message, string username)
+        {
+            return await Task.Run(() =>
+            {
+                Warning(message, username);
+                return "Success";
+            });
+        }
+
+        public async Task<string> AsyncFatal(string message, string username)
+        {
+            return await Task.Run(() =>
+            {
+                Fatal(message, username);
+                return "Success";
+            });
+        }
+
+        public async Task<string> AsyncSucces(string message, string username)
+        {
+            return await Task.Run(() =>
+            {
+                Success(message, username);
+                return "Success";
+            });
+        }
+
         public void Log(string type, string username, string message)
         {
             DBconnection db = new DBconnection();

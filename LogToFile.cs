@@ -1,9 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Logging
 {
+    class Program
+    {
+        LogToFile LogToFile = new LogToFile();
+
+    }
+
     public class LogToFile
     {
         private readonly string ErrorPath;
@@ -60,7 +67,16 @@ namespace Logging
             FatalPath = fatalPath;
             SuccessPath = successPath;
         }
-       
+
+        public async Task<string> AsyncLog(string path, string type, string message)
+        {
+            return await Task.Run(() =>
+            {
+                Log(path, type, message);
+                return "Success";
+            });
+
+        }
 
         public void Log(string path, string type, string message)
         {
