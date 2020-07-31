@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Logging
 {
@@ -88,6 +89,36 @@ namespace Logging
         public void Success(string message)
         {
             Log(InfoPath, "SUCCESS", $"{message}");
+        }
+
+        public async Task LogAsync(string path, string type, string message)
+        {
+            var msg = $"{DateTime.Now} [{type}] : {message}";
+            using (var file = new StreamWriter(path, true, Encoding.UTF8))
+            {
+                await file.WriteLineAsync(msg);
+            }
+        }
+
+        public async Task InfoAsync(string message)
+        {
+            await LogAsync(InfoPath, "INFO ", message);
+        }
+        public async Task ErrorAsync(string message)
+        {
+            await LogAsync(ErrorPath, "ERROR", message);
+        }
+        public async Task WarningAsync(string message)
+        {
+            await LogAsync(WarningPath, "WARNING", message);
+        }
+        public async Task FatalAsync(string message)
+        {
+            await LogAsync(FatalPath, "FATAL", message);
+        }
+        public async Task SuccessAsync(string message)
+        {
+            await LogAsync(InfoPath, "SUCCESS", message);
         }
     }
 }
