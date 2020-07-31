@@ -96,7 +96,7 @@ namespace Logging
             var msg = $"{DateTime.Now} [{type}] : {message}";
             using (var file = new StreamWriter(path, true, Encoding.UTF8))
             {
-                await file.WriteAsync(msg);
+                await file.WriteLineAsync(msg);
             }
         }
 
